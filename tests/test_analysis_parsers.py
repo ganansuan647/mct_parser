@@ -11,8 +11,8 @@ from pathlib import Path
 # 添加项目根目录到Python路径，以便导入模块
 sys.path.append(str(Path(__file__).parent.parent))
 
-from mct_parser_enhanced.parsers.analysis_parsers import AnalysisParser
-from mct_parser_enhanced.models.base import MCTModel
+from mct_parser.parsers.analysis_parsers import AnalysisParser
+from mct_parser.models.base import MCTModel
 
 
 class MockParser:
