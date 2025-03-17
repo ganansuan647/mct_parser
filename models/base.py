@@ -126,8 +126,32 @@ class MCTModel:
         self.commands[command_name] = command_data
     
     def get_command(self, command_name: str) -> Optional[CommandData]:
-        """获取指定命令数据"""
+        """
+        获取指定命令数据
+        
+        Args:
+            command_name: 命令名称
+            
+        Returns:
+            命令数据对象或None（如果不存在）
+        """
         return self.commands.get(command_name)
+    
+    def get_commands_by_type(self, command_type: str) -> Dict[str, CommandData]:
+        """
+        获取指定类型的所有命令数据
+        
+        Args:
+            command_type: 命令类型前缀
+            
+        Returns:
+            以命令名为键，命令数据为值的字典
+        """
+        result = {}
+        for cmd_name, cmd_data in self.commands.items():
+            if cmd_name.startswith(command_type):
+                result[cmd_name] = cmd_data
+        return result
     
     def has_command(self, command_name: str) -> bool:
         """检查是否存在指定命令"""
@@ -183,15 +207,17 @@ class MCTModel:
     
     def get_tapered_section_groups(self) -> Dict:
         """获取所有变截面组"""
-        if 'TS-GROUP' in self.commands:
-            cmd_data = self.commands['TS-GROUP']
+        result = {}
+        # 获取TS-GROUP命令的数据
+        ts_group_commands = self.get_commands_by_type('TS-GROUP')
+        for cmd_name, cmd_data in ts_group_commands.items():
             # 处理字典形式的数据
-            if isinstance(cmd_data, dict) and 'groups' in cmd_data:
-                return cmd_data['groups']
+            if isinstance(cmd_data, dict):
+                result[cmd_name] = cmd_data
             # 处理对象形式的数据
-            elif hasattr(cmd_data, 'groups'):
-                return cmd_data.groups
-        return {}
+            else:
+                result[cmd_name] = cmd_data
+        return result
     
     def get_elastic_links(self) -> Dict:
         """获取所有弹性连接单元"""

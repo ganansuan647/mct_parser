@@ -219,7 +219,14 @@ class CompGenSectPscDesign(CommandData):
 # 新增的变截面组模型
 class TsGroup(CommandData):
     """TS-GROUP命令模型 - 变截面组"""
-    groups: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+    id: int
+    name: str
+    elements: List[int] = Field(default_factory=list)
+    z_variation: Dict[str, Any] = Field(default_factory=dict)
+    y_variation: Dict[str, Any] = Field(default_factory=dict)
+    section_control_method: str = "0"
+    raw_lines: List[str] = Field(default_factory=list)
+    line_nums: List[int] = Field(default_factory=list)
 
 
 # 连接单元命令模型
